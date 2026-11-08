@@ -1,0 +1,5 @@
+P001|Margherita|Tomato, mozzarella and fresh basil|1800.0|true|Medium
+P002|Pepperoni|Mozzarella with classic pepperoni|2200.0|true|Medium
+P003|Four Cheese|A blend of four delicious cheeses|2400.0|true|Medium
+P004|Veggie Supreme|Bell peppers, olives, onion and mushrooms|2100.0|true|Medium
+P005|BBQ Chicken|BBQ chicken, onion and mozzarella|2500.0|true|Medium
