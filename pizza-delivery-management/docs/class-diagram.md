@@ -38,9 +38,9 @@ class PizzaController
 class CustomerController
 class OrderController
 MenuItem <|-- Pizza
-PizzaService --> FileDataStore
-CustomerService --> FileDataStore
-OrderService --> FileDataStore
+
+
+
 PizzaController --> PizzaService
 CustomerController --> CustomerService
 OrderController --> OrderService
@@ -50,4 +50,4 @@ OrderController --> PizzaService
 ```
 
 ## Viva explanation
-The controllers receive browser requests. Services apply application rules. `FileDataStore` reads and writes text files. Model classes represent pizzas, customers and orders. `Pizza` inherits from `MenuItem`, demonstrating inheritance. Services use the abstract parent type `MenuItem`, demonstrating polymorphism.
+The controllers receive browser requests. Services apply application rules.Services use MySQL database repositories to store and retrieve application data.. Model classes represent pizzas, customers and orders. `Pizza` inherits from `MenuItem`, demonstrating inheritance. Services use the abstract parent type `MenuItem`, demonstrating polymorphism.

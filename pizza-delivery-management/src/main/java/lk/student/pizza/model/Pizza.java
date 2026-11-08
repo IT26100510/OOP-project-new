@@ -1,8 +1,15 @@
 
 package lk.student.pizza.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "pizzas")
 public class Pizza extends MenuItem {
 
+    @Column(length = 30)
     private String size;
 
     // Default Constructor

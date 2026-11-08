@@ -30,9 +30,21 @@ public class OrderController {
     }
 
     @GetMapping
-    public String list(Model model) {
+    public String list(Model model, HttpSession session) {
 
-        model.addAttribute("orders", orders.findAll());
+        @SuppressWarnings("unchecked")
+        Map<String, String> user = (Map<String, String>) session.getAttribute("user");
+
+        boolean admin = "ADMIN".equals(user.get("role"));
+        if (admin) {
+            model.addAttribute("orders", orders.findAll());
+        } else {
+            var customer = customers.findByEmail(user.get("email"));
+            model.addAttribute("orders", customer
+                    .map(c -> orders.findByCustomerId(c.getId()))
+                    .orElseGet(java.util.List::of));
+        }
+        model.addAttribute("isAdmin", admin);
 
         return "orders";
     }

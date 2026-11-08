@@ -44,7 +44,6 @@ public class AuthInterceptor implements HandlerInterceptor {
   }
 
   if ((path.startsWith("/admin/")
-          || path.equals("/orders")
           || path.startsWith("/orders/status")
           || path.startsWith("/orders/delete")
           || path.startsWith("/customers"))

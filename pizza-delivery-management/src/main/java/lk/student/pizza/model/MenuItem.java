@@ -1,15 +1,25 @@
 
 package lk.student.pizza.model;
 
-/**
- * Base class used to demonstrate inheritance and polymorphism.
- */
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public abstract class MenuItem {
 
+    @Id
+    @Column(length = 20)
     private String id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(length = 1000)
     private String description;
+
     private double price;
+
     private boolean available;
 
     // Default Constructor

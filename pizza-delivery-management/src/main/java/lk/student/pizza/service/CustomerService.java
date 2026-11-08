@@ -1,26 +1,90 @@
+
 package lk.student.pizza.service;
 
 import lk.student.pizza.model.Customer;
-import lk.student.pizza.repository.FileDataStore;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import java.util.*;
-import java.util.stream.Collectors;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class CustomerService {
-    private static final String FILE="customers.txt";
-    private final FileDataStore store;
-    public CustomerService(FileDataStore store){this.store=store;}
-    public List<Customer> findAll(){return store.read(FILE).stream().map(this::fromLine).collect(Collectors.toList());}
-    public Optional<Customer> findById(String id){return findAll().stream().filter(c->c.getId().equals(id)).findFirst();}
-    public Optional<Customer> findByEmail(String email){return findAll().stream().filter(c->c.getEmail().equalsIgnoreCase(email)).findFirst();}
-    public void save(Customer c){
-        List<Customer> all=findAll();
-        if(c.getId()==null||c.getId().isBlank()) c.setId("C"+String.format("%03d",new Random().nextInt(900)+100));
-        all.removeIf(x->x.getId().equals(c.getId())); all.add(c); store.write(FILE,all.stream().map(this::toLine).collect(Collectors.toList()));
+
+    private final JdbcTemplate jdbc;
+
+    public CustomerService(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
     }
-    public void delete(String id){List<Customer> all=findAll();all.removeIf(c->c.getId().equals(id));store.write(FILE,all.stream().map(this::toLine).collect(Collectors.toList()));}
-    private String toLine(Customer c){return String.join("|",safe(c.getId()),safe(c.getName()),safe(c.getEmail()),safe(c.getPhone()),safe(c.getAddress()));}
-    private Customer fromLine(String s){String[] a=s.split("\\|",-1);return new Customer(a[0],a[1],a[2],a[3],a.length>4?a[4]:"");}
-    private String safe(String s){return s==null?"":s.replace("|","/").replace("\n"," ");}
+
+    public List<Customer> findAll() {
+        return jdbc.query(
+                "SELECT * FROM customers ORDER BY id",
+                (rs, rowNum) -> new Customer(
+                        rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address")
+                )
+        );
+    }
+
+    public Optional<Customer> findById(String id) {
+        return jdbc.query(
+                "SELECT * FROM customers WHERE id = ?",
+                (rs, rowNum) -> new Customer(
+                        rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address")
+                ),
+                id
+        ).stream().findFirst();
+    }
+
+    public Optional<Customer> findByEmail(String email) {
+        return jdbc.query(
+                "SELECT * FROM customers WHERE LOWER(email) = LOWER(?)",
+                (rs, rowNum) -> new Customer(
+                        rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address")
+                ),
+                email
+        ).stream().findFirst();
+    }
+
+    public void save(Customer c) {
+        if (c.getId() == null || c.getId().isBlank()) {
+            c.setId("C" + String.format(
+                    "%03d", new Random().nextInt(900) + 100
+            ));
+        }
+
+        jdbc.update(
+                """
+                INSERT INTO customers (id, name, email, phone, address)
+                VALUES (?, ?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE
+                    name = VALUES(name),
+                    email = VALUES(email),
+                    phone = VALUES(phone),
+                    address = VALUES(address)
+                """,
+                c.getId(),
+                c.getName(),
+                c.getEmail(),
+                c.getPhone(),
+                c.getAddress()
+        );
+    }
+
+    public void delete(String id) {
+        jdbc.update("DELETE FROM customers WHERE id = ?", id);
+    }
 }
