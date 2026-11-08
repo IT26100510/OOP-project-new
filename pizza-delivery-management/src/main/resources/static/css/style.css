@@ -1,0 +1,600 @@
+
+/* ========================================
+   1. GOOGLE FONTS
+======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap');
+
+
+/* ========================================
+   2. ROOT VARIABLES
+======================================== */
+
+:root {
+    --ink: #20201f;
+    --muted: #77736d;
+    --red: #d84a32;
+    --cream: #f7f4ee;
+    --line: #e9e3d9;
+}
+
+
+/* ========================================
+   3. GLOBAL STYLES
+======================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', Arial, sans-serif;
+}
+
+
+/* ========================================
+   4. NAVIGATION BAR
+======================================== */
+
+.nav {
+    height: 72px;
+    padding: 0 max(calc((100% - 1120px) / 2), 5%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+}
+
+.nav a {
+    text-decoration: none;
+    color: var(--ink);
+    margin-left: 25px;
+    font-size: 14px;
+}
+
+.nav .brand {
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin: 0;
+    color: var(--red);
+}
+
+
+/* ========================================
+   5. HERO SECTION
+======================================== */
+
+.hero {
+    min-height: 440px;
+    background:
+            linear-gradient(
+                    90deg,
+                    rgba(20, 18, 16, .88),
+                    rgba(20, 18, 16, .25)
+            ),
+            url('https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=1800&q=85')
+            center / cover;
+
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.hero-content {
+    max-width: 1120px;
+    width: 90%;
+    margin: auto;
+    padding: 60px 0;
+}
+
+.eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--red);
+}
+
+
+/* ========================================
+   6. HEADINGS AND TEXT
+======================================== */
+
+h1,
+h2,
+h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+}
+
+h1 {
+    font-size: 48px;
+    line-height: 1.1;
+    margin: 12px 0;
+}
+
+h2 {
+    font-size: 34px;
+    margin: 5px 0;
+}
+
+.hero h1 {
+    font-size: 64px;
+}
+
+.hero h1 span {
+    color: #f2a18e;
+}
+
+.hero p:not(.eyebrow) {
+    color: #eee;
+    max-width: 420px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+}
+
+
+/* ========================================
+   7. BUTTONS
+======================================== */
+
+.btn {
+    display: inline-block;
+    border: 0;
+    border-radius: 4px;
+    background: var(--red);
+    color: white;
+    text-decoration: none;
+    padding: 13px 20px;
+    font: 600 14px 'DM Sans';
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #b93b28;
+}
+
+.small {
+    padding: 10px 18px;
+}
+
+
+/* ========================================
+   8. CONTAINER AND SECTION HEADINGS
+======================================== */
+
+.container {
+    max-width: 1120px;
+    width: 90%;
+    margin: auto;
+}
+
+.section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin: 58px 0 25px;
+}
+
+.text-link {
+    color: var(--red);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+
+/* ========================================
+   9. PIZZA GRID AND CARDS
+======================================== */
+
+.pizza-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-bottom: 75px;
+}
+
+.pizza-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px #3428190b;
+}
+
+.pizza-art {
+    height: 180px;
+    display: grid;
+    place-items: center;
+    background: #f0e3d4;
+}
+
+.pizza-art span {
+    font-size: 86px;
+    filter: drop-shadow(0 8px 6px #0002);
+}
+
+.art-1 {
+    background: #ead8c8;
+}
+
+.art-2 {
+    background: #e9e2d3;
+}
+
+.art-3 {
+    background: #dce4d3;
+}
+
+.art-4 {
+    background: #e9d7c7;
+}
+
+
+/* ========================================
+   10. PIZZA INFORMATION
+======================================== */
+
+.pizza-info {
+    padding: 18px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.pizza-info h3 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.pizza-info strong {
+    color: var(--red);
+    white-space: nowrap;
+}
+
+.pizza-info p,
+.muted {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.availability {
+    font-size: 11px;
+    color: #398253;
+    font-weight: 700;
+}
+
+
+/* ========================================
+   11. FOOTER
+======================================== */
+
+footer {
+    text-align: center;
+    padding: 28px;
+    background: #242321;
+    color: #c8c2b9;
+    font-size: 12px;
+}
+
+
+/* ========================================
+   12. GENERAL PAGE LAYOUT
+======================================== */
+
+.page {
+    padding: 30px 0 80px;
+}
+
+.page .section-head {
+    margin-top: 20px;
+}
+
+.page h1 {
+    font-size: 38px;
+}
+
+.narrow {
+    max-width: 620px;
+}
+
+
+/* ========================================
+   13. FORMS
+======================================== */
+
+.form-card {
+    background: white;
+    padding: 28px;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px #3428190b;
+}
+
+.form-card label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 18px;
+}
+
+.form-card input:not([type=checkbox]),
+.form-card textarea,
+.form-card select,
+.search input,
+td select {
+    display: block;
+    width: 100%;
+    margin-top: 7px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: #fff;
+    font: 14px 'DM Sans';
+}
+
+.form-card textarea {
+    min-height: 85px;
+    resize: vertical;
+}
+
+.form-card .check {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 8px;
+}
+
+
+/* ========================================
+   14. TABLES
+======================================== */
+
+.table-wrap {
+    overflow-x: auto;
+    background: white;
+    border-radius: 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 15px;
+    border-bottom: 1px solid var(--line);
+}
+
+th {
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+}
+
+td {
+    max-width: 260px;
+}
+
+
+/* ========================================
+   15. ACTION LINKS
+======================================== */
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.actions a,
+.link {
+    color: var(--red);
+    text-decoration: none;
+    font: 600 13px 'DM Sans';
+}
+
+.actions form {
+    margin: 0;
+}
+
+.link {
+    border: 0;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.danger {
+    color: #b52c2c;
+}
+
+
+/* ========================================
+   16. SEARCH BAR
+======================================== */
+
+.search {
+    display: flex;
+    gap: 10px;
+    max-width: 440px;
+    margin-bottom: 20px;
+}
+
+.search input {
+    margin: 0;
+}
+
+
+/* ========================================
+   17. STATUS MESSAGES
+======================================== */
+
+.success {
+    color: #287448;
+}
+
+.error {
+    color: #b52c2c;
+}
+
+
+/* ========================================
+   18. RESPONSIVE DESIGN - TABLETS
+======================================== */
+
+@media (max-width: 760px) {
+
+    .nav {
+        height: auto;
+        padding: 18px 5%;
+        align-items: flex-start;
+        gap: 14px;
+        flex-direction: column;
+    }
+
+    .nav a {
+        margin: 0 14px 0 0;
+    }
+
+    .hero h1 {
+        font-size: 48px;
+    }
+
+    .pizza-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .section-head {
+        align-items: flex-start;
+        gap: 15px;
+        flex-direction: column;
+    }
+}
+
+
+/* ========================================
+   19. RESPONSIVE DESIGN - MOBILE
+======================================== */
+
+@media (max-width: 480px) {
+
+    .pizza-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        min-height: 390px;
+    }
+
+    .hero h1 {
+        font-size: 42px;
+    }
+}
+
+
+/* Menu cards with pizza photography */
+.menu-pizza-grid {
+    align-items: stretch;
+}
+
+.menu-pizza-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-pizza-image {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    background: #ead8c8;
+}
+
+.menu-pizza-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .35s ease;
+}
+
+.menu-pizza-card:hover .menu-pizza-image img {
+    transform: scale(1.045);
+}
+
+.menu-pizza-card .pizza-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.menu-pizza-card .pizza-info > p {
+    margin: 10px 0;
+}
+
+.menu-pizza-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 12px;
+}
+
+.admin-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.admin-actions a {
+    color: var(--red);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.admin-actions form {
+    margin: 0;
+}
+
+.unavailable {
+    color: #a33 !important;
+}
+
+.menu-unavailable {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    padding: 7px 10px;
+    border-radius: 4px;
+    background: rgba(32, 32, 31, .82);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+@media (max-width: 760px) {
+    .menu-pizza-image {
+        height: 200px;
+    }
+}

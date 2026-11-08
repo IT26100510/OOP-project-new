@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Login | Pizza House</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div th:replace="~{fragments :: nav}"></div>
+
+<main class="container page narrow">
+    <p class="eyebrow">WELCOME BACK</p>
+    <h1>Sign in</h1>
+
+    <p class="success" th:if="${message}" th:text="${message}"></p>
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+
+    <form class="form-card" action="/login" method="post">
+        <input type="hidden" name="next" th:value="${next}">
+
+        <label>Account type
+            <select name="accountType">
+                <option value="CUSTOMER">Customer</option>
+                <option value="ADMIN">Admin</option>
+            </select>
+        </label>
+
+        <label>Email
+            <input type="email" name="email" required>
+        </label>
+
+        <label>Password
+            <input type="password" name="password" required>
+        </label>
+
+        <div class="form-actions">
+            <button class="btn">Login</button>
+            <a class="text-link" href="/register">Create customer account</a>
+        </div>
+    </form>
+
+    <p class="muted">Demo admin login: admin@pizzahouse.lk / Admin@123</p>
+</main>
+</body>
+</html>
