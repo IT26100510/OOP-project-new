@@ -598,3 +598,22 @@ td {
         height: 200px;
     }
 }
+
+
+/* Account, delivery, and feedback modules */
+.status-pill { display:inline-block; padding:5px 9px; border-radius:20px; background:#f5e4dc; color:#8b3d2e; font-size:11px; font-weight:700; white-space:nowrap; }
+.feedback-create { margin-bottom:30px; }
+.feedback-create h2 { margin-top:0; }
+.feedback-fields { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.feedback-fields label { display:block; font-size:13px; font-weight:600; }
+.feedback-fields select { display:block; width:100%; padding:11px; margin-top:7px; border:1px solid var(--line); border-radius:4px; background:white; font:14px 'DM Sans'; }
+.review-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+.review-card { background:white; border:1px solid var(--line); border-radius:8px; padding:20px; }
+.review-card h3 { margin:14px 0 5px; font-size:20px; }
+.review-card small { color:var(--muted); }
+.review-stars { color:#bd6d2d; letter-spacing:2px; }
+.review-card blockquote { margin:14px 0; padding:10px 13px; border-left:3px solid var(--red); background:#faf6f1; font-size:13px; }
+.review-actions { margin-top:15px; }
+.reply-form { display:flex; gap:10px; margin:14px 0; }
+.reply-form input { flex:1; min-width:0; padding:9px; border:1px solid var(--line); border-radius:4px; }
+@media (max-width:760px) { .feedback-fields,.review-grid { grid-template-columns:1fr; } }

@@ -16,6 +16,8 @@
 <div th:replace="~{fragments :: nav}"></div>
 
 <main class="container page">
+    <p class="success" th:if="${message}" th:text="${message}"></p>
+    <p class="error" th:if="${error}" th:text="${error}"></p>
 
     <div class="section-head">
 

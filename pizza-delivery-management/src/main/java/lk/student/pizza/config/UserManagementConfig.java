@@ -16,6 +16,11 @@ public class UserManagementConfig {
     }
 
     @Bean
+    public feedback.FeedbackManager feedbackManager(org.springframework.jdbc.core.JdbcTemplate jdbc) {
+        return new feedback.FeedbackManager(jdbc);
+    }
+
+    @Bean
     public String seedDefaultAdmin(UserService users,
                                    UserRepository repository) throws Exception {
         if (repository.findAll().isEmpty()) {

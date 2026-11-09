@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 public class CustomerService {
@@ -61,27 +60,19 @@ public class CustomerService {
 
     public void save(Customer c) {
         if (c.getId() == null || c.getId().isBlank()) {
-            c.setId("C" + String.format(
-                    "%03d", new Random().nextInt(900) + 100
-            ));
+            var existing = findByEmail(c.getEmail());
+            c.setId(existing.map(Customer::getId).orElseGet(() -> "CP" + java.util.UUID.randomUUID().toString().substring(0, 8).toUpperCase()));
         }
-
-        jdbc.update(
-                """
-                INSERT INTO customers (id, name, email, phone, address)
-                VALUES (?, ?, ?, ?, ?)
-                ON DUPLICATE KEY UPDATE
-                    name = VALUES(name),
-                    email = VALUES(email),
-                    phone = VALUES(phone),
-                    address = VALUES(address)
-                """,
-                c.getId(),
-                c.getName(),
-                c.getEmail(),
-                c.getPhone(),
-                c.getAddress()
+        int changed = jdbc.update(
+                "UPDATE customers SET name=?, email=?, phone=?, address=? WHERE id=?",
+                c.getName(), c.getEmail(), c.getPhone(), c.getAddress(), c.getId()
         );
+        if (changed == 0) {
+            jdbc.update(
+                    "INSERT INTO customers (id, name, email, phone, address) VALUES (?, ?, ?, ?, ?)",
+                    c.getId(), c.getName(), c.getEmail(), c.getPhone(), c.getAddress()
+            );
+        }
     }
 
     public void delete(String id) {

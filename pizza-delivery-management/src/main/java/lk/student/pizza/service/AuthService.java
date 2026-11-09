@@ -38,12 +38,10 @@ public class AuthService {
         try {
             lk.student.pizza.usermanagement.Customer account = userService.registerCustomer(name, email, password, phone, address);
             // Keep the website's existing customer-management page in sync.
+            String profileId = customers.findByEmail(account.getEmail()).map(Customer::getId)
+                    .orElse("C" + String.format("%03d", account.getId()));
             customers.save(new Customer(
-                    "C" + String.format("%03d", account.getId()),
-                    account.getName(),
-                    account.getEmail(),
-                    account.getPhone(),
-                    account.getAddress()
+                    profileId, account.getName(), account.getEmail(), account.getPhone(), account.getAddress()
             ));
             return true;
         } catch (ValidationException | IOException | RuntimeException e) {

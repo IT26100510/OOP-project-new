@@ -22,7 +22,9 @@ public class Main {
             System.out.println("9. Pizza Average Rating");
             System.out.println("10. Admin Reply");
             System.out.println("0. Exit");
+
             choice = readInt("Choose: ");
+
             try {
                 switch (choice) {
                     case 1 -> addPizzaReview();
@@ -31,7 +33,8 @@ public class Main {
                     case 4 -> searchById();
                     case 5 -> show(manager.getByCustomer(readInt("Customer ID: ")));
                     case 6 -> updateFeedback();
-                    case 7 -> System.out.println(manager.delete(readInt("Feedback ID: ")) ? "Deleted." : "Not found.");
+                    case 7 -> System.out.println(
+                            manager.delete(readInt("Feedback ID: ")) ? "Deleted." : "Not found.");
                     case 8 -> show(manager.getByRating(readInt("Rating (1-5): ")));
                     case 9 -> pizzaAverage();
                     case 10 -> adminReply();
@@ -45,59 +48,78 @@ public class Main {
     }
 
     private static void addPizzaReview() {
-        int cid = readInt("Customer ID: ");
-        int pid = readInt("Pizza ID: ");
-        String name = readLine("Pizza name: ");
+        int customerId = readInt("Customer ID: ");
+        int pizzaId = readInt("Pizza ID: ");
+        String pizzaName = readLine("Pizza name: ");
         int rating = readInt("Rating (1-5): ");
         String comment = readLine("Comment: ");
-        manager.add(new PizzaReview(cid, pid, name, rating, comment));
+
+        manager.add(new PizzaReview(customerId, pizzaId, pizzaName, rating, comment));
         System.out.println("Pizza review added. Thank you!");
     }
 
     private static void addDeliveryReview() {
-        int cid = readInt("Customer ID: ");
-        int oid = readInt("Order ID: ");
-        String rider = readLine("Rider name: ");
+        int customerId = readInt("Customer ID: ");
+        int orderId = readInt("Order ID: ");
+        String riderName = readLine("Rider name: ");
         int rating = readInt("Rating (1-5): ");
         String comment = readLine("Comment: ");
-        manager.add(new DeliveryReview(cid, oid, rider, rating, comment));
+
+        manager.add(new DeliveryReview(customerId, orderId, riderName, rating, comment));
         System.out.println("Delivery review added. Thank you!");
     }
 
     private static void searchById() {
-        Feedback f = manager.findById(readInt("Feedback ID: "));
-        if (f == null) System.out.println("Not found."); else f.display();
+        Feedback feedback = manager.findById(readInt("Feedback ID: "));
+        if (feedback == null) {
+            System.out.println("Not found.");
+        } else {
+            feedback.display();
+        }
     }
 
     private static void updateFeedback() {
         int id = readInt("Feedback ID: ");
         int rating = readInt("New rating (1-5): ");
         String comment = readLine("New comment: ");
+
         System.out.println(manager.update(id, rating, comment) ? "Updated." : "Not found.");
     }
 
     private static void pizzaAverage() {
-        int pid = readInt("Pizza ID: ");
-        System.out.printf("Average rating: %.2f / 5%n", manager.averageRatingForPizza(pid));
+        int pizzaId = readInt("Pizza ID: ");
+        System.out.printf("Average rating: %.2f / 5%n", manager.averageRatingForPizza(pizzaId));
     }
 
     private static void adminReply() {
         int id = readInt("Feedback ID: ");
         String reply = readLine("Reply: ");
+
         System.out.println(manager.replyToFeedback(id, reply) ? "Reply saved." : "Not found.");
     }
 
-    private static void show(List<Feedback> list) {
-        if (list.isEmpty()) { System.out.println("No feedback found."); return; }
-        for (Feedback f : list) f.display();   // polymorphism in action
-        System.out.printf("%nTotal: %d | Overall average: %.2f%n", list.size(), manager.overallAverage());
+    private static void show(List<Feedback> feedbackList) {
+        if (feedbackList.isEmpty()) {
+            System.out.println("No feedback found.");
+            return;
+        }
+
+        for (Feedback feedback : feedbackList) {
+            feedback.display(); // Runtime polymorphism
+        }
+
+        System.out.printf("%nTotal: %d | Overall average: %.2f%n",
+                feedbackList.size(), manager.overallAverage());
     }
 
     private static int readInt(String prompt) {
         while (true) {
             System.out.print(prompt);
-            try { return Integer.parseInt(sc.nextLine().trim()); }
-            catch (NumberFormatException e) { System.out.println("Enter a valid number."); }
+            try {
+                return Integer.parseInt(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Enter a valid number.");
+            }
         }
     }
 

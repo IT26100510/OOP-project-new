@@ -48,6 +48,18 @@ public class OrderService {
         );
     }
 
+    public java.util.Optional<CustomerOrder> findById(String id) {
+        return jdbc.query("SELECT * FROM orders WHERE id = ?", (rs, n) -> new CustomerOrder(
+                rs.getString("id"), rs.getString("customer_id"), rs.getString("customer_name"),
+                rs.getString("pizza_name"), rs.getInt("quantity"), rs.getDouble("total"), rs.getString("status")
+        ), id).stream().findFirst();
+    }
+
+    public void update(CustomerOrder o) {
+        jdbc.update("UPDATE orders SET customer_id=?, customer_name=?, pizza_name=?, quantity=?, total=? WHERE id=?",
+                o.getCustomerId(), o.getCustomerName(), o.getPizzaName(), o.getQuantity(), o.getTotal(), o.getId());
+    }
+
     public void place(CustomerOrder o) {
         o.setId("O" + String.format(
                 "%03d", new Random().nextInt(900) + 100
@@ -79,6 +91,7 @@ public class OrderService {
     }
 
     public void delete(String id) {
+        jdbc.update("DELETE FROM deliveries WHERE order_id = ?", id);
         jdbc.update(
                 "DELETE FROM orders WHERE id = ?",
                 id

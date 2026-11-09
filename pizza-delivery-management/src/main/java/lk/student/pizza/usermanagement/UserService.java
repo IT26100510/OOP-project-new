@@ -93,6 +93,22 @@ public class UserService {
     }
 
     // ---------------- DELETE ----------------
+    public void updateAdminStaffCode(int id, String staffCode) throws ValidationException, IOException {
+        if (staffCode == null || staffCode.isBlank() || staffCode.contains("|")) throw new ValidationException("Staff code cannot be empty.");
+        User u = findUser(id);
+        if (!(u instanceof Admin admin)) throw new ValidationException("Only administrators have a staff code.");
+        admin.setStaffCode(staffCode.trim());
+        repository.update(admin);
+    }
+
+    /** Admin-assisted password reset used by the account management screen. */
+    public void setPasswordByAdmin(int id, String newPassword) throws ValidationException, IOException {
+        checkPasswordStrength(newPassword);
+        User u = findUser(id);
+        u.changePassword(newPassword);
+        repository.update(u);
+    }
+
     public void deleteUser(int id) throws ValidationException, IOException {
         findUser(id); // throws if it does not exist
         repository.delete(id);

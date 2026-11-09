@@ -18,10 +18,13 @@
 
         <span th:if="${session.user != null}">
             <a href="/orders">Orders</a>
+            <a href="/feedback">Feedback</a>
         </span>
 
         <span th:if="${session.user != null and session.user.role == 'ADMIN'}">
             <a href="/customers">Customers</a>
+            <a href="/users">Accounts</a>
+            <a href="/deliveries">Deliveries</a>
         </span>
 
         <a
