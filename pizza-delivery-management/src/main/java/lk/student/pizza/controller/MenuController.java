@@ -1,3 +1,4 @@
+
 package lk.student.pizza.controller;
 
 import lk.student.pizza.service.PizzaService;
@@ -16,7 +17,10 @@ public class MenuController {
 
     @GetMapping("/menu")
     public String menu(Model model) {
+
         model.addAttribute("pizzas", pizzas.findAll());
+
         return "pizzas";
     }
 }
+
