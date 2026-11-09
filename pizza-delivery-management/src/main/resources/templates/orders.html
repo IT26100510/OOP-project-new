@@ -58,7 +58,9 @@
                     </span>
                     <span th:if="${!isAdmin}" th:text="${o.status}"></span>
                 </td>
-                
+                <td th:text="${deliveriesByOrder[o.id] != null ? deliveriesByOrder[o.id].status : 'Not assigned'}"></td>
+                <td th:text="${deliveriesByOrder[o.id] != null ? deliveriesByOrder[o.id].riderName : '—'}"></td>
+                <td th:text="${deliveriesByOrder[o.id] != null ? deliveriesByOrder[o.id].eta : '—'}"></td>
                 <td th:if="${isAdmin}" class="actions">
                     <a th:href="@{/orders/edit/{id}(id=${o.id})}">Edit</a>
                     <form th:action="@{/orders/delete/{id}(id=${o.id})}" method="post">
