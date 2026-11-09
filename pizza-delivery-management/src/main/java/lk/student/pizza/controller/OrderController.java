@@ -44,10 +44,7 @@ public class OrderController {
                     .orElseGet(java.util.List::of));
         }
         model.addAttribute("isAdmin", admin);
-        java.util.Map<String, lk.student.pizza.model.Delivery> deliveriesByOrder = new java.util.HashMap<>();
-        for (var delivery : deliveries.findAll()) deliveriesByOrder.put(delivery.getOrderId(), delivery);
-        model.addAttribute("deliveriesByOrder", deliveriesByOrder);
-
+        
         return "orders";
     }
 
