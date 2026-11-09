@@ -1,55 +1,78 @@
-package lk.student.pizza.controller;
 
+package lk.student.pizza.service;
+
+import lk.student.pizza.model.MenuItem;
 import lk.student.pizza.model.Pizza;
-import lk.student.pizza.service.PizzaService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import lk.student.pizza.repository.PizzaRepository;
+import org.springframework.stereotype.Service;
 
-@Controller
-@RequestMapping("/admin/pizzas")
-public class PizzaController {
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
-    private final PizzaService service;
+@Service
+public class PizzaService {
 
-    public PizzaController(PizzaService service) {
-        this.service = service;
-    }
+    private final PizzaRepository pizzaRepository;
 
-    @GetMapping
-    public String list(Model model) {
-        model.addAttribute("pizzas", service.findAll());
-        return "pizzas";
-    }
+    // Constructor
+    public PizzaService(PizzaRepository pizzaRepository) {
+        this.pizzaRepository = pizzaRepository;
 
-    @GetMapping("/new")
-    public String createForm(Model model) {
-        model.addAttribute("pizza", new Pizza());
-        return "pizza-form";
-    }
+        // Insert default pizzas if the database is empty
+        if (pizzaRepository.count() == 0) {
 
-    @GetMapping("/edit/{id}")
-    public String editForm(@PathVariable String id, Model model) {
-        Pizza p = (Pizza) service.findById(id).orElseThrow();
-        model.addAttribute("pizza", p);
-        return "pizza-form";
-    }
+            pizzaRepository.saveAll(List.of(
+                    new Pizza("P001", "Margherita",
+                            "Tomato, mozzarella and fresh basil",
+                            1800, true, "Medium"),
 
-    @PostMapping("/save")
-    public String save(@ModelAttribute Pizza pizza, RedirectAttributes ra) {
-        if (pizza.getName() == null || pizza.getName().isBlank() || pizza.getPrice() <= 0) {
-            ra.addFlashAttribute("error", "Enter a name and a price greater than zero.");
-            return "redirect:/admin/pizzas";
+                    new Pizza("P002", "Pepperoni",
+                            "Mozzarella with classic pepperoni",
+                            2200, true, "Medium"),
+
+                    new Pizza("P003", "Four Cheese",
+                            "A blend of four delicious cheeses",
+                            2400, true, "Medium"),
+
+                    new Pizza("P004", "Veggie Supreme",
+                            "Bell peppers, olives, onion and mushrooms",
+                            2100, true, "Medium"),
+
+                    new Pizza("P005", "BBQ Chicken",
+                            "BBQ chicken, onion and mozzarella",
+                            2500, true, "Medium")
+            ));
         }
-        service.save(pizza);
-        ra.addFlashAttribute("message", "Pizza saved successfully.");
-        return "redirect:/admin/pizzas";
     }
 
-    @PostMapping("/delete/{id}")
-    public String delete(@PathVariable String id) {
-        service.delete(id);
-        return "redirect:/admin/pizzas";
+   
+    public List<MenuItem> findAll() {
+        return pizzaRepository.findAll()
+                .stream()
+                .map(pizza -> (MenuItem) pizza)
+                .toList();
+    }
+
+    
+    public Optional<MenuItem> findById(String id) {
+        return pizzaRepository.findById(id)
+                .map(pizza -> (MenuItem) pizza);
+    }
+
+
+    public void save(Pizza pizza) {
+
+        if (pizza.getId() == null || pizza.getId().isBlank()) {
+            pizza.setId("P" +
+                    String.format("%03d", new Random().nextInt(900) + 100));
+        }
+
+        pizzaRepository.save(pizza);
+    }
+
+   
+    public void delete(String id) {
+        pizzaRepository.deleteById(id);
     }
 }
