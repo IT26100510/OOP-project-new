@@ -102,3 +102,19 @@ This is a classroom demonstration, not a production delivery platform. It has no
 - Customers can view the menu after signing in and submit orders through the demo checkout page.
 - The checkout currently simulates payment; it does not connect to a real payment gateway or process card payments.
 - Account records are stored in `data/users.txt`; customer passwords are stored as salted PBKDF2 hashes.
+
+\n## User Management integration
+The standalone UserManagement module has been integrated into the Spring Boot website.
+Its domain/repository/service classes are under `src/main/java/lk/student/pizza/usermanagement`.
+`UserManagementConfig` creates the repository and service beans. The website's `/login`,
+`/register`, and `/logout` routes continue to use the existing Thymeleaf pages and session
+interceptor, but authentication and registration now use the new User Management classes.
+
+New account records are stored in `data/user-accounts.txt` (separate from legacy website
+data files). On first startup, a default administrator is created:
+- Email: `admin@pizzahouse.lk`
+- Password: `Admin@123`
+
+Customer registration requires a password of at least 8 characters containing a letter
+and a digit, and a phone number containing 9-12 digits. The console-only `Main.java` is
+intentionally not included in the Spring Boot application.

@@ -1,4 +1,4 @@
-package lk.student.pizza.feedback;
+package feedback;
 
 import java.util.List;
 

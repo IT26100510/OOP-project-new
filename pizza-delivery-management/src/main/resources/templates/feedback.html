@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Feedback</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<div th:replace="~{fragments :: nav}"></div>
+
+<main class="container page">
+
+    <div class="section-head">
+        <div>
+            <p class="eyebrow">CUSTOMER VOICE</p>
+            <h1>Feedback and reviews</h1>
+            <p class="muted">
+                Share feedback about a pizza or a delivery.
+                You can edit or remove your own reviews.
+            </p>
+        </div>
+    </div>
+
+    <p class="success" th:if="${message}" th:text="${message}"></p>
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+
+    <form class="form-card feedback-create"
+          action="/feedback/create" method="post">
+
+        <h2>Write a review</h2>
+
+        <div class="feedback-fields">
+
+            <label>
+                Review type
+
+                <select name="reviewType" id="reviewType"
+                        onchange="document.getElementById('pizzaChoice').hidden=this.value!=='PIZZA';document.getElementById('orderChoice').hidden=this.value!=='DELIVERY';">
+
+                    <option value="PIZZA">Pizza</option>
+                    <option value="DELIVERY">Delivery</option>
+
+                </select>
+            </label>
+
+            <label id="pizzaChoice">
+                Pizza
+
+                <select name="pizzaId">
+                    <option th:each="p : ${pizzas}"
+                            th:value="${p.id}"
+                            th:text="${p.name}">
+                    </option>
+                </select>
+            </label>
+
+            <label id="orderChoice" hidden>
+                My order
+
+                <select name="orderId">
+                    <option th:each="o : ${orders}"
+                            th:value="${o.id}"
+                            th:text="${o.id + ' · ' + o.pizzaName}">
+                    </option>
+                </select>
+            </label>
+
+            <label>
+                Rating
+
+                <select name="rating">
+                    <option value="5">5 - Excellent</option>
+                    <option value="4">4 - Good</option>
+                    <option value="3">3 - Average</option>
+                    <option value="2">2 - Poor</option>
+                    <option value="1">1 - Very poor</option>
+                </select>
+            </label>
+
+        </div>
+
+        <label>
+            Comment
+
+            <textarea name="comment"
+                      required maxlength="1000"></textarea>
+        </label>
+
+        <button class="btn" type="submit">
+            Submit review
+        </button>
+
+    </form>
+
+    <section class="review-grid">
+
+        <article class="review-card"
+                 th:each="f : ${feedback}">
+
+            <div class="row">
+                <strong th:text="${f.feedbackType}"></strong>
+                <span class="review-stars"
+                      th:text="${f.stars()}"></span>
+            </div>
+
+            <h3 th:text="${f.targetName}"></h3>
+
+            <p class="muted" th:text="${f.comment}"></p>
+
+            <small>
+                Customer #
+                <span th:text="${f.customerId}"></span>
+                ·
+                <span th:text="${f.date}"></span>
+            </small>
+
+            <blockquote
+                    th:if="${!#strings.isEmpty(f.adminReply)}"
+                    th:text="${'Admin reply: ' + f.adminReply}">
+            </blockquote>
+
+            <div class="actions review-actions"
+                 th:if="${isAdmin or f.customerId == currentUserId}">
+
+                <a th:unless="${isAdmin}"
+                   th:href="@{/feedback/edit/{id}(id=${f.feedbackId})}">
+                    Edit
+                </a>
+
+                <form th:action="@{/feedback/delete/{id}(id=${f.feedbackId})}"
+                      method="post"
+                      onsubmit="return confirm('Delete this review?')">
+
+                    <button class="link danger" type="submit">
+                        Delete
+                    </button>
+
+                </form>
+
+            </div>
+
+            <form class="reply-form"
+                  th:if="${isAdmin}"
+                  th:action="@{/feedback/reply/{id}(id=${f.feedbackId})}"
+                  method="post">
+
+                <input name="reply"
+                       placeholder="Write an admin reply"
+                       th:value="${f.adminReply}">
+
+                <button class="link" type="submit">
+                    Reply
+                </button>
+
+            </form>
+
+            <a class="text-link"
+               th:if="${isAdmin}"
+               th:href="@{/feedback/edit/{id}(id=${f.feedbackId})}">
+                Edit review →
+            </a>
+
+        </article>
+
+        <p class="muted" th:if="${#lists.isEmpty(feedback)}">
+            No feedback yet. Be the first to review.
+        </p>
+
+    </section>
+
+</main>
+
+</body>
+</html>

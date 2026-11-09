@@ -1,7 +1,8 @@
-package lk.student.pizza.feedback;
+package feedback;
 
 import java.time.LocalDate;
 
+/** Abstract base class: common data/behaviour for every kind of feedback. */
 public abstract class Feedback {
     private static int idCounter = 1;          // auto-generates unique IDs
 
@@ -20,15 +21,23 @@ public abstract class Feedback {
         this.date = LocalDate.now();
     }
 
+    /** Rehydrates a saved review while preserving its ID and date. */
+    protected Feedback(int feedbackId, int customerId, int rating, String comment, LocalDate date, String adminReply) {
+        this.feedbackId = feedbackId;
+        this.customerId = customerId;
+        while (idCounter <= feedbackId) idCounter = feedbackId + 1;
+        setRating(rating);
+        setComment(comment);
+        this.date = date;
+        setAdminReply(adminReply);
+    }
+
     // ---- Getters ----
     public int getFeedbackId()    { return feedbackId; }
     public int getCustomerId()    { return customerId; }
     public int getRating()        { return rating; }
-    @SuppressWarnings("unused")
     public String getComment()    { return comment; }
-    @SuppressWarnings("unused")
     public LocalDate getDate()    { return date; }
-    @SuppressWarnings("unused")
     public String getAdminReply() { return adminReply; }
 
     // ---- Setters with validation (encapsulation) ----

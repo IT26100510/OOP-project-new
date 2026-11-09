@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Payment</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div th:replace="~{fragments :: nav}"></div>
+
+<main class="container page narrow">
+    <p class="eyebrow">SECURE CHECKOUT</p>
+    <h1>Place an order &amp; Pay</h1>
+    <p class="muted">Your delivery details are taken from your customer account.</p>
+
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+
+    <form class="form-card" action="/orders/place" method="post">
+        <input type="hidden" name="customerId" th:value="${customer.id}">
+
+        <label>Customer
+            <input th:value="${customer.name}" readonly>
+        </label>
+
+        <label>Pizza
+            <select name="pizzaName" id="pizzaSelect" required>
+                <option value="">Select pizza</option>
+                <option th:each="p : ${pizzas}"
+                        th:if="${p.available}"
+                        th:value="${p.id}"
+                        th:text="${p.name + ' - Rs. ' + p.price}"
+                        th:selected="${selectedPizza != null and selectedPizza.id == p.id}">
+                </option>
+            </select>
+        </label>
+
+        <label>Quantity
+            <input type="number" name="quantity" min="1" value="1" required>
+        </label>
+
+        <p class="eyebrow">PAYMENT DETAILS</p>
+
+        <label>Payment method
+            <select required>
+                <option>Card payment (demo)</option>
+                <option>Cash on delivery</option>
+            </select>
+        </label>
+
+        <label>Cardholder name
+            <input placeholder="Name on card" required>
+        </label>
+
+        <label>Card number
+            <input inputmode="numeric" minlength="12" maxlength="19"
+                   placeholder="1234 5678 9012 3456" required>
+        </label>
+
+        <div class="form-actions">
+            <button class="btn" type="submit">Pay &amp; place order</button>
+            <a class="text-link" href="/menu">Cancel</a>
+        </div>
+
+        <p class="muted">Demo checkout only ??? no real card details are transmitted or charged.</p>
+    </form>
+</main>
+</body>
+</html>
